@@ -5,36 +5,65 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Solid Web Components UI</title>
   <style>
+    :root {
+      --color-primary: #2563eb;
+      --color-primary-hover: #1d4ed8;
+      --color-secondary: #4b5563;
+      --color-secondary-hover: #374151;
+      --color-text: #374151;
+      --color-text-inverse: #ffffff;
+      --color-border: #9ca3af;
+      --color-background: transparent;
+      --color-background-hover: #f3f4f6;
+      --spacing-xs: 0.25rem;
+      --spacing-sm: 0.5rem;
+      --spacing-md: 1rem;
+      --spacing-lg: 1.5rem;
+      --spacing-xl: 2rem;
+      --font-size-xs: 0.75rem;
+      --font-size-sm: 0.875rem;
+      --font-size-md: 1rem;
+      --font-size-lg: 1.125rem;
+      --font-size-xl: 1.25rem;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+
     body {
       font-family: Arial, sans-serif;
-      max-width: 800px;
+      max-width: 1000px;
       margin: 0 auto;
       padding: 2rem;
       line-height: 1.6;
-      color: #333;
+      color: var(--color-text);
     }
     h1 {
-      color: #2563eb;
+      color: var(--color-primary);
       font-size: 2.5rem;
       margin-bottom: 1rem;
     }
     h2 {
-      color: #1e40af;
+      color: var(--color-primary-hover);
       font-size: 1.5rem;
       margin-top: 2rem;
       margin-bottom: 1rem;
     }
+    h3 {
+      font-size: 1.1rem;
+      margin: 1rem 0 0.5rem 0;
+    }
     .card {
       background-color: #f8fafc;
       border: 1px solid #e2e8f0;
-      border-radius: 8px;
-      padding: 1.5rem;
-      margin: 1.5rem 0;
+      border-radius: var(--spacing-xs);
+      padding: var(--spacing-lg);
+      margin: var(--spacing-lg) 0;
     }
     .code-block {
       background-color: #f1f5f9;
-      border-radius: 6px;
-      padding: 1rem;
+      border-radius: var(--spacing-xs);
+      padding: var(--spacing-md);
       overflow-x: auto;
       font-family: 'Monaco', 'Menlo', monospace;
       font-size: 0.9rem;
@@ -50,100 +79,440 @@
       font-weight: bold;
     }
     .info {
-      color: #3b82f6;
+      color: var(--color-primary);
       font-weight: bold;
+    }
+    .demo-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-md);
+      align-items: center;
+      margin: var(--spacing-md) 0;
+    }
+    .demo-label {
+      min-width: 100px;
+      font-weight: 600;
+      color: var(--color-text);
+    }
+    .swatches {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-md);
+      margin: var(--spacing-md) 0;
+    }
+    .swatch {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--spacing-xs);
+    }
+    .swatch-box {
+      width: 60px;
+      height: 60px;
+      border-radius: var(--spacing-xs);
+      box-shadow: var(--shadow-sm);
+    }
+    .swatch-name {
+      font-size: var(--font-size-sm);
+      font-family: monospace;
+    }
+    .spacing-demo {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+    }
+    .spacing-box {
+      background-color: var(--color-primary);
+      border-radius: 2px;
+    }
+    .token-override {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: var(--spacing-md);
+      margin: var(--spacing-md) 0;
+    }
+    .token-field {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-xs);
+    }
+    .token-field label {
+      font-size: var(--font-size-sm);
+      font-family: monospace;
+      color: var(--color-text);
+    }
+    .token-field input[type="color"] {
+      width: 100%;
+      height: 36px;
+      padding: 0;
+      border: 1px solid var(--color-border);
+      border-radius: var(--spacing-xs);
+      cursor: pointer;
+    }
+    .token-field input[type="text"] {
+      padding: var(--spacing-xs) var(--spacing-sm);
+      border: 1px solid var(--color-border);
+      border-radius: var(--spacing-xs);
+      font-size: var(--font-size-sm);
+      font-family: monospace;
+    }
+    .btn-reset {
+      padding: var(--spacing-sm) var(--spacing-md);
+      border: 1px solid var(--color-border);
+      background: white;
+      color: var(--color-text);
+      border-radius: var(--spacing-xs);
+      cursor: pointer;
+      font-size: var(--font-size-sm);
+    }
+    .btn-reset:hover {
+      background: var(--color-background-hover);
+    }
+
+    .swc-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+      border-radius: var(--spacing-xs);
+      transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+      border: 1px solid transparent;
+      font-family: inherit;
+      line-height: 1.5;
+      white-space: nowrap;
+      user-select: none;
+    }
+    .swc-button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+    .swc-button--variant-primary {
+      background-color: var(--color-primary);
+      color: var(--color-text-inverse);
+      box-shadow: var(--shadow-sm);
+    }
+    .swc-button--variant-primary:hover:not(:disabled) {
+      background-color: var(--color-primary-hover);
+    }
+    .swc-button--variant-secondary {
+      background-color: var(--color-secondary);
+      color: var(--color-text-inverse);
+      box-shadow: var(--shadow-sm);
+    }
+    .swc-button--variant-secondary:hover:not(:disabled) {
+      background-color: var(--color-secondary-hover);
+    }
+    .swc-button--variant-outline {
+      background-color: var(--color-background);
+      color: var(--color-text);
+      border-color: var(--color-border);
+    }
+    .swc-button--variant-outline:hover:not(:disabled) {
+      background-color: var(--color-background-hover);
+    }
+    .swc-button--variant-ghost {
+      background-color: var(--color-background);
+      color: var(--color-text);
+      border-color: transparent;
+    }
+    .swc-button--variant-ghost:hover:not(:disabled) {
+      background-color: var(--color-background-hover);
+    }
+    .swc-button--size-small {
+      padding: var(--spacing-xs) var(--spacing-sm);
+      font-size: var(--font-size-sm);
+    }
+    .swc-button--size-medium {
+      padding: var(--spacing-sm) var(--spacing-md);
+      font-size: var(--font-size-md);
+    }
+    .swc-button--size-large {
+      padding: var(--spacing-md) var(--spacing-lg);
+      font-size: var(--font-size-lg);
     }
   </style>
 </head>
 <body>
   <h1>Solid Web Components UI</h1>
-  <p>这是一个基于 Vite + TypeScript 构建的 Web Component UI 组件库，专为 SolidJS 项目设计。</p>
-  
+  <p>这是一个基于 Vite + TypeScript 构建的 UI 组件库，支持设计 Token 系统生成 CSS 变量，所有样式均可通过覆盖 CSS 变量进行主题定制。</p>
+
   <div class="card">
-    <h2>🚀 项目状态</h2>
-    <p><span class="success">✅ 服务运行正常</span></p>
-    <p>你可以通过以下方式访问和使用这个组件库：</p>
-    <ul>
-      <li><strong>访问地址</strong>：http://localhost:8080</li>
-      <li><strong>NPM 包名</strong>：solid-web-components-ui</li>
-      <li><strong>测试命令</strong>：npm run test</li>
-    </ul>
+    <h2>🎨 设计 Token 实时预览</h2>
+    <p>修改下方的 Token 值，可以实时看到按钮组件的变化。这些变量即构建产物中生成的 CSS 变量。</p>
+
+    <h3>颜色 Token</h3>
+    <div class="token-override" id="colorTokens"></div>
+
+    <h3>间距 Token</h3>
+    <div class="token-override" id="spacingTokens"></div>
+
+    <h3>字号 Token</h3>
+    <div class="token-override" id="fontSizeTokens"></div>
+
+    <h3>阴影 Token</h3>
+    <div class="token-override" id="shadowTokens"></div>
+
+    <div style="margin-top: 1rem;">
+      <button class="btn-reset" onclick="resetTokens()">↺ 重置所有 Token</button>
+    </div>
   </div>
-  
+
+  <div class="card">
+    <h2>🎯 Token 颜色样本</h2>
+    <div class="swatches" id="swatches"></div>
+  </div>
+
+  <div class="card">
+    <h2>📐 Token 间距展示</h2>
+    <div id="spacingDemo"></div>
+  </div>
+
+  <div class="card">
+    <h2>🔘 Button 组件示例</h2>
+    <p>所有按钮均使用 CSS 变量驱动，修改上方 Token 会实时影响样式。</p>
+
+    <h3>变体 Variants</h3>
+    <div class="demo-row">
+      <span class="demo-label">Primary</span>
+      <button class="swc-button swc-button--variant-primary swc-button--size-medium">Primary Button</button>
+      <button class="swc-button swc-button--variant-primary swc-button--size-medium" disabled>Disabled</button>
+    </div>
+    <div class="demo-row">
+      <span class="demo-label">Secondary</span>
+      <button class="swc-button swc-button--variant-secondary swc-button--size-medium">Secondary Button</button>
+      <button class="swc-button swc-button--variant-secondary swc-button--size-medium" disabled>Disabled</button>
+    </div>
+    <div class="demo-row">
+      <span class="demo-label">Outline</span>
+      <button class="swc-button swc-button--variant-outline swc-button--size-medium">Outline Button</button>
+      <button class="swc-button swc-button--variant-outline swc-button--size-medium" disabled>Disabled</button>
+    </div>
+    <div class="demo-row">
+      <span class="demo-label">Ghost</span>
+      <button class="swc-button swc-button--variant-ghost swc-button--size-medium">Ghost Button</button>
+      <button class="swc-button swc-button--variant-ghost swc-button--size-medium" disabled>Disabled</button>
+    </div>
+
+    <h3>尺寸 Sizes</h3>
+    <div class="demo-row">
+      <span class="demo-label">Small</span>
+      <button class="swc-button swc-button--variant-primary swc-button--size-small">Small</button>
+    </div>
+    <div class="demo-row">
+      <span class="demo-label">Medium</span>
+      <button class="swc-button swc-button--variant-primary swc-button--size-medium">Medium</button>
+    </div>
+    <div class="demo-row">
+      <span class="demo-label">Large</span>
+      <button class="swc-button swc-button--variant-primary swc-button--size-large">Large</button>
+    </div>
+  </div>
+
   <div class="card">
     <h2>📦 安装使用</h2>
     <p>在你的 SolidJS 项目中安装：</p>
     <div class="code-block">
 npm install solid-web-components-ui
     </div>
-    
+
     <p>使用示例：</p>
     <div class="code-block">
 import { Button } from 'solid-web-components-ui';
 
 function App() {
   return (
-    <Button variant="primary" size="medium">
+    &lt;Button variant="primary" size="medium"&gt;
       点击我
-    </Button>
+    &lt;/Button&gt;
   );
 }
     </div>
+
+    <h3>自定义 Token（覆盖 CSS 变量）</h3>
+    <p>在你的项目 CSS 中覆盖变量即可实现主题定制：</p>
+    <div class="code-block">
+:root {
+  --color-primary: #7c3aed;
+  --color-primary-hover: #6d28d9;
+  --color-secondary: #db2777;
+  --spacing-md: 1.25rem;
+  --shadow-md: 0 6px 12px -2px rgba(124, 58, 237, 0.2);
+}
+    </div>
   </div>
-  
+
   <div class="card">
     <h2>🔧 开发命令</h2>
     <ul>
       <li><code>npm run dev</code> - 启动开发服务器</li>
-      <li><code>npm run build</code> - 构建项目</li>
+      <li><code>npm run build</code> - 构建项目（构建日志会提示缺失 Token）</li>
       <li><code>npm run test</code> - 运行测试用例</li>
       <li><code>npm run lint</code> - 代码质量检查</li>
-      <li><code>npm run publish</code> - 构建并发布到 NPM</li>
     </ul>
   </div>
-  
-  <div class="card">
-    <h2>🧪 测试用例</h2>
-    <p>项目包含 5 个测试用例，验证按钮组件的功能：</p>
-    <ul>
-      <li>✅ 默认按钮渲染</li>
-      <li>✅ 不同变体按钮渲染</li>
-      <li>✅ 不同尺寸按钮渲染</li>
-      <li>✅ 禁用状态按钮渲染</li>
-      <li>✅ 按钮点击事件</li>
-    </ul>
-    <p>运行测试：<code>npm run test</code></p>
-  </div>
-  
-  <div class="card">
-    <h2>🐳 Docker 部署</h2>
-    <p>完整的部署步骤：</p>
-    <div class="code-block">
-# 启动服务
-docker compose up -d
 
-# 访问服务
-http://localhost:8080
-
-# 停止服务
-docker compose down
-    </div>
-  </div>
-  
   <h2>📁 项目结构</h2>
   <div class="code-block">
 solid-web-components-ui/
 ├── src/
-│   ├── components/         # 组件目录
-│   │   ├── Button.tsx      # 按钮组件
-│   │   └── __tests__/      # 测试文件目录
-│   └── index.ts            # 入口文件
-├── Dockerfile              # Docker 构建文件
-├── docker-compose.yml      # Docker 部署配置
-├── package.json            # 项目配置和依赖
-└── README.md               # 项目文档
-    </div>
-  
-  <p class="info">ℹ️ 注意：这是一个组件库项目，主要用于在其他 SolidJS 项目中通过 NPM 安装使用。</p>
+│   ├── components/
+│   │   ├── Button.tsx       # 按钮组件（使用 CSS 变量）
+│   │   ├── Button.css       # 按钮样式
+│   │   └── __tests__/
+│   ├── tokens/
+│   │   └── utils.ts         # Token 工具函数
+│   ├── tokens.d.ts          # 虚拟模块类型声明
+│   └── index.ts             # 入口文件
+├── tokens.config.ts         # 设计 Token 配置文件
+├── vite-plugin-tokens.ts    # Token 生成 Vite 插件
+└── vite.config.ts           # Vite 配置
+  </div>
+
+  <p class="info">ℹ️ 修改 tokens.config.ts 后运行 build，构建日志会自动打印生成的 CSS 变量和缺失 Token 警告。</p>
+
+  <script>
+    const defaultTokenValues = {
+      'color-primary': '#2563eb',
+      'color-primary-hover': '#1d4ed8',
+      'color-secondary': '#4b5563',
+      'color-secondary-hover': '#374151',
+      'color-text': '#374151',
+      'color-text-inverse': '#ffffff',
+      'color-border': '#9ca3af',
+      'color-background': 'transparent',
+      'color-background-hover': '#f3f4f6',
+      'spacing-xs': '0.25rem',
+      'spacing-sm': '0.5rem',
+      'spacing-md': '1rem',
+      'spacing-lg': '1.5rem',
+      'spacing-xl': '2rem',
+      'font-size-xs': '0.75rem',
+      'font-size-sm': '0.875rem',
+      'font-size-md': '1rem',
+      'font-size-lg': '1.125rem',
+      'font-size-xl': '1.25rem',
+      'shadow-sm': '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+      'shadow-md': '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+      'shadow-lg': '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+    };
+
+    const isColorToken = (name) => name.startsWith('color-') && !name.includes('background');
+    const isColorLike = (name) => name.startsWith('color-');
+
+    function createTokenField(tokenName) {
+      const varName = '--' + tokenName;
+      const currentValue = getComputedStyle(document.documentElement).getPropertyValue(varName).trim() || defaultTokenValues[tokenName];
+      const field = document.createElement('div');
+      field.className = 'token-field';
+
+      const label = document.createElement('label');
+      label.textContent = varName;
+      field.appendChild(label);
+
+      let input;
+      if (isColorToken(tokenName) && /^#[0-9A-Fa-f]{6}$/.test(currentValue)) {
+        input = document.createElement('input');
+        input.type = 'color';
+        input.value = currentValue;
+        input.addEventListener('input', (e) => {
+          document.documentElement.style.setProperty(varName, e.target.value);
+          updateSwatches();
+        });
+      } else {
+        input = document.createElement('input');
+        input.type = 'text';
+        input.value = currentValue;
+        input.addEventListener('input', (e) => {
+          document.documentElement.style.setProperty(varName, e.target.value);
+          updateSwatches();
+        });
+      }
+      field.appendChild(input);
+      return field;
+    }
+
+    function renderTokenFields() {
+      const groups = {
+        colorTokens: Object.keys(defaultTokenValues).filter(k => k.startsWith('color-')),
+        spacingTokens: Object.keys(defaultTokenValues).filter(k => k.startsWith('spacing-')),
+        fontSizeTokens: Object.keys(defaultTokenValues).filter(k => k.startsWith('font-size-')),
+        shadowTokens: Object.keys(defaultTokenValues).filter(k => k.startsWith('shadow-')),
+      };
+      for (const [containerId, tokens] of Object.entries(groups)) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = '';
+        tokens.forEach(t => container.appendChild(createTokenField(t)));
+      }
+    }
+
+    function updateSwatches() {
+      const container = document.getElementById('swatches');
+      container.innerHTML = '';
+      const colorTokens = Object.keys(defaultTokenValues).filter(k => k.startsWith('color-'));
+      colorTokens.forEach(name => {
+        const varName = '--' + name;
+        const value = getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+        const swatch = document.createElement('div');
+        swatch.className = 'swatch';
+        const box = document.createElement('div');
+        box.className = 'swatch-box';
+        box.style.backgroundColor = value === 'transparent' ? '#fff' : value;
+        box.style.border = value === 'transparent' ? '1px dashed #ccc' : 'none';
+        const label = document.createElement('span');
+        label.className = 'swatch-name';
+        label.textContent = value || '(empty)';
+        const nameLabel = document.createElement('span');
+        nameLabel.className = 'swatch-name';
+        nameLabel.style.fontWeight = '600';
+        nameLabel.textContent = name;
+        swatch.appendChild(box);
+        swatch.appendChild(nameLabel);
+        swatch.appendChild(label);
+        container.appendChild(swatch);
+      });
+    }
+
+    function renderSpacingDemo() {
+      const container = document.getElementById('spacingDemo');
+      container.innerHTML = '';
+      const spacingTokens = ['spacing-xs', 'spacing-sm', 'spacing-md', 'spacing-lg', 'spacing-xl'];
+      spacingTokens.forEach(name => {
+        const row = document.createElement('div');
+        row.className = 'demo-row';
+        const label = document.createElement('span');
+        label.className = 'demo-label';
+        label.textContent = name;
+        const demo = document.createElement('div');
+        demo.className = 'spacing-demo';
+        const box = document.createElement('div');
+        box.className = 'spacing-box';
+        box.style.width = 'var(--' + name + ')';
+        box.style.height = 'var(--' + name + ')';
+        demo.appendChild(box);
+        const value = document.createElement('span');
+        value.style.fontFamily = 'monospace';
+        value.style.fontSize = 'var(--font-size-sm)';
+        value.textContent = 'var(--' + name + ')';
+        row.appendChild(label);
+        row.appendChild(demo);
+        row.appendChild(value);
+        container.appendChild(row);
+      });
+    }
+
+    function resetTokens() {
+      Object.entries(defaultTokenValues).forEach(([name, value]) => {
+        document.documentElement.style.setProperty('--' + name, value);
+      });
+      renderTokenFields();
+      updateSwatches();
+    }
+
+    renderTokenFields();
+    updateSwatches();
+    renderSpacingDemo();
+  </script>
 </body>
 </html>
